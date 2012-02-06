@@ -1,0 +1,89 @@
+<!doctype html>
+<meta charset=utf-8>
+<title> Feed </title>
+
+
+<div class=widget>
+  <span class=title>Jan Keromnes</span>
+  <pre id=feed></pre>
+  <p class=right><a href=https://github.com/jankeromnes>view profile &raquo;</a></p>
+</div>
+
+
+<style>
+div.widget {
+  width: 400px;
+  background: #F0F0F0;
+  color: #333;
+  font: 13px helvetica,arial,freesans,clean,sans-serif;
+  padding-top: 10px; padding-bottom: 10px;
+  border: 1px solid #cacaca;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.4),0 0 10px rgba(0,0,0,0.1);
+}
+div.widget a {
+  color: #4183C4;
+  text-decoration: none;
+}
+div.widget a:hover {
+  text-decoration: underline;
+}
+div.widget p {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+div.widget p.right {
+  text-align: right;
+}
+div.widget span.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+div.widget pre#feed {
+  background: #feffff;
+  height: 300px;
+  padding: 5px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: 10px; margin-bottom: 10px;
+  margin-left: 1px; margin-right: 1px;
+  color: #656d6f;
+  font-size: 12px;
+  font-family: "lucida grande",lucida,tahoma,helvetica,arial,sans-serif;
+}
+div.widget pre#feed li {
+  list-style: none;
+  margin: 0px;
+}
+div.widget pre#feed blockquote {
+  margin-left: 0px;
+}
+</style>
+
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+
+google.load("feeds", "1");
+
+function initialize() {
+  var feed = new google.feeds.Feed("https://github.com/jankeromnes.atom");
+  feed.load(function(result) {
+    if (!result.error) {
+      var container = document.getElementById("feed");
+      for (var i = 0; i < result.feed.entries.length; i++) {
+        var entry = result.feed.entries[i].content
+          .replace(/href="/g, 'href="https://github.com')
+          .replace(/>(\s*\n\s*)*</g, '><')
+          .replace(/<br>/g, '')
+          .replace(/a><a/g, 'a>\n      <a');
+        container.innerHTML += entry;
+        console.log(JSON.stringify(entry));
+      }
+    }
+  });
+}
+google.setOnLoadCallback(initialize);
+
+</script>
